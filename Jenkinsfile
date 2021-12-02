@@ -52,20 +52,16 @@ pipeline {
                         }
                     }
                     steps {
-                        sh 'pytest -rA --junitxml=logs/uireport.xml'
+                        sh 'pytest -s -rA --junitxml=test-report.xml'
                     }
                     post {
                         always {
-                            junit testResults: 'logs/uireport.xml'
-                            /* X08 Warnings Next Plugin */
-                            recordIssues enabledForFailure: true, tool: codeAnalysis()
-                            recordIssues enabledForFailure: true, tool: codeChecker()
+                            junit testResults: 'test-report.xml'
                         }
                     }
                 }
             }
         }
-
         /* X09 SonarQube */
         stage('SonarQube') {
             agent {
